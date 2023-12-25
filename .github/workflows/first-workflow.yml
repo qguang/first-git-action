@@ -10,7 +10,7 @@ jobs:
         run: |
           echo "line 1"
           echo "line 2"
-          echo uname -a
-          echo pwd
+          uname -a
+          pwd
       - name: Print Goodbye
         run : echo "Done - bye!"
