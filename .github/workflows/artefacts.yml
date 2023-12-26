@@ -1,0 +1,30 @@
+name: Artefacts
+on:  workflow_dispatch:
+jobs:
+  test-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print greeting
+        run: echo "Hello World!"
+      - name: Multiple lines
+        run: |
+          echo "line 1"
+          echo "line 2"
+          uname -a
+          pwd
+      - name: Get Code
+        uses: actions/checkout@v4
+      - name: Show NPM version - before
+        run: npm --version
+      - name: Install node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Show NPM version - after
+        run: npm --version
+      - name: Install Dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm test
+      - name: Print Goodbye
+        run : echo "Done - bye!"
