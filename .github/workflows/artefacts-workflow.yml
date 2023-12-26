@@ -20,6 +20,10 @@ jobs:
           echo $JOB_LEVEL_VAR_NAME
           echo ${{ env.MONGODB_DB_NAME }}
           env
+      - name: Test env secret
+        run: |
+          echo ${{ secrets.test_env_secret }}
+
       # cache depedencies for npm
       - name: Cache Dependencies
         uses: actions/cache@v3
