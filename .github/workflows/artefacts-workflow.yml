@@ -5,7 +5,9 @@ env:
   MONGODB_DB_NAME: my-mongo-dba
 jobs:
   build-job:
+    
     runs-on: ubuntu-latest
+    environment: prod # attach to an environment. Note: we can define protection rule when configuring environment
     env:
       JOB_LEVEL_VAR_NAME: this environment variable is defined at job level
     outputs:
@@ -20,10 +22,12 @@ jobs:
           echo $JOB_LEVEL_VAR_NAME
           echo ${{ env.MONGODB_DB_NAME }}
           env
-      - name: Test env secret
+      - name: Test REPO secret
         run: |
           echo ${{ secrets.test_env_secret }}
-
+      - name: Test ENV secret
+        run: |
+          echo ${{ secrets.PASSWORD }}
       # cache depedencies for npm
       - name: Cache Dependencies
         uses: actions/cache@v3
