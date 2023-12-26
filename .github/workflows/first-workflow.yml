@@ -3,7 +3,7 @@ on:
   - workflow_dispatch
   - push
 jobs:
-  first-job:
+  test-job:
     runs-on: ubuntu-latest
     steps:
       - name: Print greeting
@@ -30,8 +30,8 @@ jobs:
         run: npm test
       - name: Print Goodbye
         run : echo "Done - bye!"
-  deploy:
-    needs: [test]
+  deploy-job:
+    needs: [test-job]
     runs-on: ubuntu-lastest
     steps:
       - name: Get Code
