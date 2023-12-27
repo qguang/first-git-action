@@ -10,16 +10,9 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
-        with:
-          path: node_modules
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      # check cache output result
-      - name: Install dependencies
-        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
-        run: npm ci
+      # composite custom action
+      - name: Load & cache dependencies
+        uses: ./.github/workflows/cached_deps
       # for some reasons this lint command failed, I commented it out just for the sake of learning.
       # I don't know how to fix it.
       # - name: Lint code
