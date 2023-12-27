@@ -78,3 +78,11 @@ jobs:
         run: ls
       - name: Deploy
         run: echo "Deploying..."
+  # conditional job
+  report:
+    needs: [lint, deploy]  # due to deploy dependes on other, using deploy means wait for all others
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: run if any jobs failed
+        run: echo "this is report job"
