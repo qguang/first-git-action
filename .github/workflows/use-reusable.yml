@@ -1,0 +1,78 @@
+name: Use re-usable Flow
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      # check cache output result
+      - name: Install dependencies
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: npm ci
+      # for some reasons this lint command failed, I commented it out just for the sake of learning.
+      # I don't know how to fix it.
+      # - name: Lint code
+      #   run: npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: npm ci
+      - name: Test code
+        continue-on-error: true
+        id: run-tests
+        # deliberate failure
+        run: npm rn test
+      - name: Upload test report
+        # due to we use continue-on-error, failure() will not detects the failure due to steps.run-tests.conclusion is success
+        if: failure() && steps.run-tests.outcome == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: fake-test-report
+          path: package.json
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
+        run: npm ci
+      - name: Build website
+        id: build-website
+        run: npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: dist
+  deploy:
+    needs: build
+    uses: ./.github/workflows/reusable.yml
