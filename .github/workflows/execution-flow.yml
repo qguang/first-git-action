@@ -44,6 +44,7 @@ jobs:
         # deliberate failure
         run: npm rn test
       - name: Upload test report
+        # due to we use continue-on-error, failure() will not detects the failure due to steps.run-tests.conclusion is success
         if: failure() && steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
