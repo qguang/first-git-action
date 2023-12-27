@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      # composite custom action
+      # custom action - composite
       - name: Load & cache dependencies
         uses: ./.github/workflows/cached_deps
       # for some reasons this lint command failed, I commented it out just for the sake of learning.

@@ -1,8 +1,9 @@
 ---
+# custom action - composite
 name: 'Get & Cache Dependencies'
 description: 'Get the dependencies (via npm) and cache them'
 runs:
-  uses: 'composite'
+  using: 'composite'
   steps:
     - name: Cache Dependencies
       id: cache
@@ -13,4 +14,5 @@ runs:
     - name: Install dependencies
       if: ${{ steps.cache.outputs.cache-hit != 'true' }}
       run: npm ci
+      # need to specify shell
       shell: bash
