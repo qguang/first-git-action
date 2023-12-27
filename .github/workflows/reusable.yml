@@ -8,8 +8,20 @@ on:
         required: false
         default: dist
         type: string
+    # secrets parameter
+    # secrets:
+    #   some-secret:
+    #     required: false
+    outputs:
+      # Level3 of setting workflow output
+      my_result:
+        description: result of the deployment operation
+        value: ${{ jobs.deploy-job.outputs.my_outcome }}
 jobs:
   deploy-job:
+    # Level2 of setting workflow output
+    outputs:
+      my_outcome: ${{ steps.set-result.outputs.my-step-result }}
     runs-on: ubuntu-latest
     steps:
       - name: Get Code
@@ -20,3 +32,7 @@ jobs:
         run: ls
       - name: Output information
         run: echo "just to demo reusable workflow"
+      # Level1 of setting workflow output
+      - name: Set result output
+        id: set-result
+        run: echo "my-step-result=success" >> $GITHUB_OUTPUT
