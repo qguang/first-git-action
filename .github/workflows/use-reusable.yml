@@ -13,6 +13,8 @@ jobs:
       # custom action - composite
       - name: Load & cache dependencies
         uses: ./.github/workflows/cached_deps
+        with:
+          my_caching_param: false
       # for some reasons this lint command failed, I commented it out just for the sake of learning.
       # I don't know how to fix it.
       # - name: Lint code
@@ -22,15 +24,11 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
-      - name: Cache dependencies
-        id: cache
-        uses: actions/cache@v3
+      # custom action - composite
+      - name: Load & cache dependencies
+        uses: ./.github/workflows/cached_deps
         with:
-          path: node_modules
-          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
-      - name: Install dependencies
-        if: ${{ steps.cache.outputs.cache-hit != 'true' }}
-        run: npm ci
+          my_caching_param: true
       - name: Test code
         continue-on-error: true
         id: run-tests
