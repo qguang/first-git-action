@@ -26,9 +26,12 @@ jobs:
         uses: actions/checkout@v3
       # custom action - composite
       - name: Load & cache dependencies
+        id: cache-deps
         uses: ./.github/workflows/cached_deps
         with:
           my_caching_param: 'true'
+      - name: Output of custom action
+        run: echo "Cached used: ${{ steps.cache-deps.outputs.my_caching_param}}"
       - name: Test code
         continue-on-error: true
         id: run-tests

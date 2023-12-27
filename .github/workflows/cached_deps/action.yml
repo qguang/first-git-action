@@ -7,6 +7,10 @@ inputs:
     description: Whether to cache dependecies or not.
     required: false
     default: 'true'
+outputs:
+  used-cache:
+    description: Where the cached was used
+    value: ${{ steps.install.outputs.cache_temp }}
 runs:
   using: 'composite'
   steps:
@@ -18,7 +22,10 @@ runs:
         path: node_modules
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
+      id: install
       if: ${{ steps.cache.outputs.cache-hit != 'true' }} ||  input.my_caching_param != 'true'
-      run: npm ci
+      run: |
+        npm ci
+        echo "cache_temp=${{inputs.my_caching_param}}" >> $GITHUB_OUTPUT
       # need to specify shell
       shell: bash
