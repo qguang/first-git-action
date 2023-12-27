@@ -42,8 +42,8 @@ jobs:
         if: failure() && steps.run-tests.outcome == 'failure'
         uses: actions/upload-artifact@v3
         with:
-          name: test-report
-          path: test.json
+          name: fake-test-report
+          path: package.json
   build:
     needs: test
     runs-on: ubuntu-latest
