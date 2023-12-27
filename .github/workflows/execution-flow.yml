@@ -39,7 +39,9 @@ jobs:
         if: ${{ steps.cache.outputs.cache-hit != 'true' }}
         run: npm ci
       - name: Test code
+        continue-on-error: true
         id: run-tests
+        # deliberate failure
         run: npm rn test
       - name: Upload test report
         if: failure() && steps.run-tests.outcome == 'failure'
