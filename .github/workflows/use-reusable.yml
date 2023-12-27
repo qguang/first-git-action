@@ -14,7 +14,7 @@ jobs:
       - name: Load & cache dependencies
         uses: ./.github/workflows/cached_deps
         with:
-          my_caching_param: false
+          my_caching_param: 'false'
       # for some reasons this lint command failed, I commented it out just for the sake of learning.
       # I don't know how to fix it.
       # - name: Lint code
@@ -28,7 +28,7 @@ jobs:
       - name: Load & cache dependencies
         uses: ./.github/workflows/cached_deps
         with:
-          my_caching_param: true
+          my_caching_param: 'true'
       - name: Test code
         continue-on-error: true
         id: run-tests
