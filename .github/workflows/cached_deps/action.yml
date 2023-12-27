@@ -18,7 +18,7 @@ runs:
         path: node_modules
         key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
     - name: Install dependencies
-      if: ${{ steps.cache.outputs.cache-hit != 'true' }} || input.my_caching_param != 'true'
+      if: ${{ steps.cache.outputs.cache-hit != 'true' }} ||  input.my_caching_param != 'true'
       run: npm ci
       # need to specify shell
       shell: bash
